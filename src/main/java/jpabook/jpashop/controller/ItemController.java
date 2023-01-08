@@ -1,16 +1,18 @@
 package jpabook.jpashop.controller;
 
+import jpabook.jpashop.domain.File.Files;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Controller
@@ -28,13 +30,36 @@ public class ItemController {
 
     //상품 등록
     @PostMapping(value = "/items/new")
-    public String create(BookForm form){
+    public String create(BookForm form, @RequestParam MultipartFile files) throws Exception{
         Book book=new Book();
         book.setName(form.getName());
         book.setPrice(form.getPrice());
         book.setStockQuantity(form.getStockQuantity());
         book.setAuthor(form.getAuthor());
         book.setIsbn(form.getIsbn());
+
+        if(!files.isEmpty()){
+            Files file =new Files();
+            String sourceFileName = files.getOriginalFilename();
+            String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();//파일 확장자
+            File destinationFile;
+            String destinationFileName;
+            String fileUrl = "C:/Users/GY/Desktop/study/jpashop/src/main/resources/st동탄2르파비스아파트atic/images/";
+
+            do{
+                destinationFileName = RandomStringUtils.randomAlphabetic(32)+"."+sourceFileNameExtension;
+                destinationFile = new File(fileUrl+destinationFileName);
+            }while(destinationFile.exists());
+
+            destinationFile.getParentFile().mkdirs();//디렉토리 만들고
+            files.transferTo(destinationFile);//파일 저장
+
+            file.setFilename(destinationFileName);
+            file.setFileOriName(sourceFileName);
+            file.setFileurl(fileUrl);
+
+            book.setFiles(file);
+        }
 
         itemService.saveItem(book);
         return "redirect:/";
@@ -70,6 +95,15 @@ public class ItemController {
     public String updateItem(@ModelAttribute("form") BookForm form){
         itemService.updateItem(form.getId(),form.getName(),form.getPrice(),form.getStockQuantity());
         return "redirect:/items";
+    }
+
+    //고객 상품 리스트
+    //상품 목록
+    @GetMapping(value = "/customer/items")
+    public String customerList(Model model){
+        List<Item> items = itemService.findCusItems();
+        model.addAttribute("items", items);
+        return "items/customerItemList";
     }
 
 }

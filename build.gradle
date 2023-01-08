@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -31,6 +32,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'//파일 업로드 확장자를 가져오기위한..
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	implementation 'org.projectlombok:lombok:1.18.18'
 	//JUnit4 추가
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
 		exclude group: "org.hamcrest", module: "hamcrest-core"

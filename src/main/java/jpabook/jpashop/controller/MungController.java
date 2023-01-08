@@ -50,6 +50,6 @@ public class MungController {
         file.setFileOriName(sourceFileName);
         file.setFileurl(fileUrl);
         filesService.save(file);
-        return "redirect:/mung/insert";
+        return "redirect:/mung/  insert";
     }
 }

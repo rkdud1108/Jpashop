@@ -24,6 +24,10 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    public List<Item> findCusItems(){
+        return itemRepository.findCusAll();
+    }
+
     public Item findOne(Long itemId){
         return itemRepository.findOne(itemId);
     }

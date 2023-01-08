@@ -1,13 +1,15 @@
 package jpabook.jpashop.service;
 
+import jpabook.jpashop.controller.LoginForm;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
+import jpabook.jpashop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -15,6 +17,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     //회원가입
     @Transactional
@@ -40,5 +43,20 @@ public class MemberService {
 
     public  Member findOne(Long memberId){
         return memberRepository.findOne(memberId);
+    }
+
+    public boolean login(LoginForm loginForm) {
+
+        Optional<Member> findMember = userRepository.findById(loginForm.getId());
+
+        if(!findMember.isPresent()){
+            return false;
+        }
+
+        if(!findMember.get().getPwd().equals(loginForm.getPwd())){
+            return false;
+        }
+        return true;
+
     }
 }

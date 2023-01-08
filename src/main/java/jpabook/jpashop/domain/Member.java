@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class Member {
     @Column(name="member_id")
     private Long id;
 
+    private String pwd;
     private String name;
 
     @Embedded

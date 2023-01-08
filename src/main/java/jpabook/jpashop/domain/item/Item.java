@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
+import jpabook.jpashop.domain.File.Files;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,11 @@ public class Item {
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories=new ArrayList<>();
+
+    //파일 이미지
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="fno")
+    private Files files;
 
     //==비즈니스 로직==//
     /**

@@ -29,4 +29,13 @@ public class ItemRepository {
         return em.createQuery("select i from Item i",Item.class).getResultList();
     }
 
+    public List<Item> findCusAll(){
+        return em.createQuery("select i from Item i inner join i.files f " +
+                "where i.files.fno = f.fno",Item.class).getResultList();
+    }
+
+    public List<Item> findAllforCustomer(){
+        return em.createQuery("select i from Item i",Item.class).getResultList();
+    }
+
 }

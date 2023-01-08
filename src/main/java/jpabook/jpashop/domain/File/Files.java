@@ -1,10 +1,9 @@
 package jpabook.jpashop.domain.File;
 
+import jpabook.jpashop.domain.item.Item;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,4 +15,8 @@ public class Files {
     String filename;
     String fileOriName;
     String fileurl;
+
+    //파일 이미지
+    @OneToOne(mappedBy = "files")
+    private Item item;
 }
